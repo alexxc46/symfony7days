@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
 
 class GenerateSummaryPostCommand extends GeneratePostCommand
 {
@@ -21,7 +21,7 @@ class GenerateSummaryPostCommand extends GeneratePostCommand
     {
         $today = new \DateTime();
         $title = 'Summary ' . $today->format('Y-m-d');
-        $content = $this->loremIpsum->paragraphs(1);
+        $content = $this->contentGenerator->generateContent();
 
         $this->createPost($title, $content);
 

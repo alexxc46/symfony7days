@@ -2,14 +2,14 @@
 
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
 
 class GenerateRandomPostCommand extends GeneratePostCommand
 {
     protected static $defaultName = 'app:generate-random-post';
-    protected static $defaultDescription = 'Run app:generate-random-post';
+    protected static $defaultDescription = 'Generates a random post with a random title and content.';
 
     protected function configure(): void
     {
@@ -19,8 +19,8 @@ class GenerateRandomPostCommand extends GeneratePostCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $title = $this->loremIpsum->words(mt_rand(4, 6));
-        $content = $this->loremIpsum->paragraphs(2);
+        $title = $this->contentGenerator->generateTitle();
+        $content = $this->contentGenerator->generateContent();
 
         $this->createPost($title, $content);
 

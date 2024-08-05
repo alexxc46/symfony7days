@@ -4,7 +4,7 @@ namespace App\Command;
 
 use Domain\Post\PostManager;
 use Doctrine\ORM\EntityManagerInterface;
-use joshtronic\LoremIpsum;
+use App\Service\ContentGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,9 +15,9 @@ class AddPostCommand extends GeneratePostCommand
 
     private PostManager $postManager;
 
-    public function __construct(PostManager $postManager, EntityManagerInterface $em, LoremIpsum $loremIpsum, string $name = null)
+    public function __construct(PostManager $postManager, EntityManagerInterface $em, ContentGeneratorInterface $contentGenerator, string $name = null)
     {
-        parent::__construct($em, $loremIpsum, $name);
+        parent::__construct($em, $contentGenerator, $name);
         $this->postManager = $postManager;
     }
 

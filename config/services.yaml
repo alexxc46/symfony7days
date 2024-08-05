@@ -27,3 +27,28 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+     # Define the content generators
+    App\Service\ContentGeneratorInterface.random:
+        class: App\Service\FakerContentGenerator
+
+    App\Service\ContentGeneratorInterface.summary:
+        class: App\Service\FakerContentGenerator
+
+    # Define the commands with their respective content generators
+    App\Command\GenerateRandomPostCommand:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+            $contentGenerator: '@App\Service\ContentGeneratorInterface.random'
+
+    App\Command\GenerateSummaryPostCommand:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+            $contentGenerator: '@App\Service\ContentGeneratorInterface.summary'
+
+    # Define other commands if needed
+    App\Command\AddPostCommand:
+        arguments:
+            $postManager: '@Domain\Post\PostManager'
+            $em: '@doctrine.orm.entity_manager'
+            $contentGenerator: '@App\Service\ContentGeneratorInterface.random'
