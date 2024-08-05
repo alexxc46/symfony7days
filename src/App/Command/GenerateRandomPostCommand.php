@@ -29,6 +29,10 @@ class GenerateRandomPostCommand extends Command
 
     protected function configure(): void
     {
+        $this
+            ->setDescription('Generates a random post with the title')
+            ->setHelp('This command generates a random post and is run by a cron job three times a day')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
