@@ -2,37 +2,19 @@
 
 namespace App\Command;
 
-use App\Entity\Post;
-use Doctrine\ORM\EntityManagerInterface;
-use joshtronic\LoremIpsum;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class GenerateRandomPostCommand extends Command
+class GenerateRandomPostCommand extends GeneratePostCommand
 {
     protected static $defaultName = 'app:generate-random-post';
     protected static $defaultDescription = 'Run app:generate-random-post';
 
-    private EntityManagerInterface $em;
-    private LoremIpsum $loremIpsum;
-
-    public function __construct(EntityManagerInterface $em, LoremIpsum $loremIpsum, string $name = null)
-    {
-        parent::__construct($name);
-        $this->em = $em;
-        $this->loremIpsum = $loremIpsum;
-    }
-
     protected function configure(): void
     {
-        $this
-            ->setDescription('Generates a random post with the title')
-            ->setHelp('This command generates a random post and is run by a cron job three times a day')
-        ;
+        $this->setDescription('Generates a random post with a random title and content.')
+            ->setHelp('This command generates a random post and is run by a cron job three times a day');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,12 +22,7 @@ class GenerateRandomPostCommand extends Command
         $title = $this->loremIpsum->words(mt_rand(4, 6));
         $content = $this->loremIpsum->paragraphs(2);
 
-        $post = new Post();
-        $post->setTitle($title);
-        $post->setContent($content);
-
-        $this->em->persist($post);
-        $this->em->flush();
+        $this->createPost($title, $content);
 
         $output->writeln('A random post has been generated.');
 
